@@ -13,7 +13,7 @@ function init() {
 sendbutton.onclick = async() => {
 
     const value = input.value
-    const res = await fetch("http://localhost:3000/complete", {
+    const res = await fetch("https://thesis-server-kit.herokuapp.com/complete", {
         body: JSON.stringify({
             query: value
         }),
