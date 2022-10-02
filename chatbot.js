@@ -13,7 +13,9 @@ function init() {
 sendbutton.onclick = async() => {
 
     const value = input.value
+    input.value = ""
     const res = await fetch("https://thesis-server-kit.herokuapp.com/complete", {
+        // const res = await fetch("http://localhost:3000/complete", {
         body: JSON.stringify({
             query: value
         }),
@@ -46,6 +48,7 @@ sendbutton.onclick = async() => {
     botchatContainer.appendChild(botchat)
     botchat.classList.add("left")
     messagesContainer.appendChild(botchatContainer)
+
 
     function scroll() {
         var scrollMsg = document.getElementById('msg')

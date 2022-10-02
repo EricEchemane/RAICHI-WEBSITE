@@ -27,7 +27,8 @@ recognition.onresult = async() => {
     console.log(transcript);
 
     const value = transcript;
-    const res = await fetch("https://thesis-server-kit.herokuapp.com/complete", {
+    const res = await fetch("https://thesis-server-kit.herokuapp.com/complete?voice=true", {
+        // const res = await fetch("http://localhost:3000/complete?voice=true", {
         body: JSON.stringify({
             query: transcript
         }),
@@ -46,7 +47,6 @@ recognition.onresult = async() => {
 function readOut(message) {
     const speech = new SpeechSynthesisUtterance();
     speech.text = message;
-
     speech.volume = 1;
     speech.pitch = 1;
     speech.rate = 1;
