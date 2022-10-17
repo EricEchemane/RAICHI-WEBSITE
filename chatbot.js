@@ -1,6 +1,8 @@
 const input = document.getElementById("chat");
 const sendbutton = document.getElementById("replybutton");
-const message = document.getElementById("msg")
+const message = document.getElementById("msg");
+
+let conversation = "";
 
 function init() {
     const res_elm = document.createElement("div");
@@ -10,34 +12,45 @@ function init() {
     document.getElementById('msg').appendChild(res_elm);
 }
 
-sendbutton.onclick = async() => {
+sendbutton.onclick = async () => {
 
-    const value = input.value
-    input.value = ""
+    const value = input.value;
+
+    // this line prevents from sending empty messages
+    if (value.trim() == "") return;
+
+    conversation += "Human: " + value + "\nAI: ";
+
+    input.value = ""; // clear the input field
+
+    // create my own chat
+    const messagesContainer = document.getElementById('msg');
+    const mychatContainer = document.createElement('div');
+    mychatContainer.style.display = "flex";
+    mychatContainer.style.justifyContent = "flex-end";
+    const mychat = document.createElement('div');
+    mychat.innerText = value;
+    mychatContainer.appendChild(mychat);
+    mychat.classList.add("right");
+    messagesContainer.appendChild(mychatContainer);
+
     const res = await fetch("https://thesis-server-kit.herokuapp.com/complete", {
         // const res = await fetch("http://localhost:3000/complete", {
         body: JSON.stringify({
-            query: value
+            query: conversation,
         }),
         method: 'POST',
         headers: {
             'Content-Type': 'Application/json'
         }
-    })
-    const data = await res.json()
+    });
+    const data = await res.json();
 
-    const answer = data.data
-    const messagesContainer = document.getElementById('msg')
+    const answer = data.data;
 
-    // create my own chat
-    const mychatContainer = document.createElement('div')
-    mychatContainer.style.display = "flex";
-    mychatContainer.style.justifyContent = "flex-end";
-    const mychat = document.createElement('div')
-    mychat.innerText = value;
-    mychatContainer.appendChild(mychat)
-    mychat.classList.add("right")
-    messagesContainer.appendChild(mychatContainer);
+    conversation += answer + "\n";
+
+    print(conversation);
 
     // create
     const botchatContainer = document.createElement('div');
@@ -45,13 +58,13 @@ sendbutton.onclick = async() => {
     botchatContainer.style.justifyContent = "flex-start";
     const botchat = document.createElement('div');
     botchat.innerText = answer;
-    botchatContainer.appendChild(botchat)
-    botchat.classList.add("left")
-    messagesContainer.appendChild(botchatContainer)
+    botchatContainer.appendChild(botchat);
+    botchat.classList.add("left");
+    messagesContainer.appendChild(botchatContainer);
 
 
     function scroll() {
-        var scrollMsg = document.getElementById('msg')
+        var scrollMsg = document.getElementById('msg');
         scrollMsg.scrollTop = scrollMsg.scrollHeight;
     }
     scroll();
