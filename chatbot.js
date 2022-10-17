@@ -50,8 +50,6 @@ sendbutton.onclick = async () => {
 
     conversation += answer + "\n";
 
-    print(conversation);
-
     // create
     const botchatContainer = document.createElement('div');
     botchatContainer.style.display = "flex";
